@@ -109,7 +109,8 @@ class BurpExtender(IBurpExtender, ITab, IMessageEditorController,
         self._logTable.getColumnModel().getColumn(8).setPreferredWidth(100)
         self._logTable.getColumnModel().getColumn(9).setPreferredWidth(100)
         self._logTable.getColumnModel().getColumn(10).setPreferredWidth(230)
-        self._logTable.getColumnModel().getColumn(11).setMaxWidth(100000)
+        self._logTable.getColumnModel().getColumn(11).setPreferredWidth(140)
+        self._logTable.getColumnModel().getColumn(12).setMaxWidth(100000)
 
         self._tabs = JTabbedPane()
         self._requestViewer = callbacks.createMessageEditor(self, False)
@@ -203,6 +204,8 @@ class BurpExtender(IBurpExtender, ITab, IMessageEditorController,
                     "comment":
                     node.getElementsByTagName(
                         "comment").item(0).getTextContent(),
+                    "ip": node.getElementsByTagName(
+                        "host").item(0).getAttribute("ip"),
                     "highlight": ""
                 }
 
@@ -257,7 +260,7 @@ class BurpExtender(IBurpExtender, ITab, IMessageEditorController,
             return 0
 
     def getColumnCount(self):
-        return 12
+        return 13
 
     def getColumnName(self, columnIndex):
         if columnIndex == 0:
@@ -283,6 +286,8 @@ class BurpExtender(IBurpExtender, ITab, IMessageEditorController,
         if columnIndex == 10:
             return "Time"
         if columnIndex == 11:
+            return "IP"
+        if columnIndex == 12:
             return "Comment"
 
         return ""
@@ -313,6 +318,8 @@ class BurpExtender(IBurpExtender, ITab, IMessageEditorController,
         if columnIndex == 10:
             return logEntry._info["time"]
         if columnIndex == 11:
+            return logEntry._info["ip"]
+        if columnIndex == 12:
             return logEntry._info["comment"]
 
         return ""
